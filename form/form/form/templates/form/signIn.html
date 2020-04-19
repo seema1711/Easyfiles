@@ -1,0 +1,28 @@
+{% load static %}
+<link rel= "stylesheet" type="text/css" href="{% static 'form/style.css' % }">
+<!DOCTYPE html>
+{% if msg %}
+<script>
+    alert('{{msg}}');
+</script>
+{% endif %}
+<html lang="en">
+<head>
+<meta charset="UTF-8"> 
+<title>Easyfiles</title>
+</ihead>
+<center>
+<body>
+<h1>EasyFiles</h1>
+<form action="/postsign/" method="post">
+{% csrf_token %}
+Email :
+<input type="email" name="email"><br><br>
+Password:
+<input type="password" name="pass"><br><br>
+<input type="submit" value="SignIn">
+<button type="button" onclick="location.href='{% url 'signup' %}'">SignUp</button>
+</form>
+</body>
+</center>
+</html>

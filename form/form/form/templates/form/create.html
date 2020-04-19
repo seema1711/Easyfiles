@@ -1,0 +1,65 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign</title>
+<style>
+        div{
+        position : absolute;
+        right : 10px;
+        top : 5px
+        }
+    </style>
+</head>
+<body>
+<div>
+
+<button type="button" onclick="location.href='{% url 'log' %}'">Logout</button>
+    </div>
+<H2>Folder Creation</H2>
+<form action="/post_create/" method="post">
+    {% csrf_token %}
+    name_of_folder :
+    <input type="text" name="Name_of_Folder" required><br><br>
+    Why_You_want_to_create_folder:
+    <textarea rows="5" cols="40" name="Reason_to_create_folder" required></textarea>
+    <br><br>
+    Uplaod:
+    <input type="file" name="files[]" id="files">
+    <input type="hidden" name="url" id="url">
+    <button type="button" onclick="upload()">Upload</button><br><br>
+    <input type="submit" value="Submit">
+
+</form>
+</body>
+<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+<!--<script src="https://www.gstatic.com/firebasejs/7.14.1/firebase-storage.js"></script>-->
+<script>
+    var config = {
+    apiKey: "AIzaSyAP5OhqpTQ_khPNQ5W8tfQYWy8WJ9mxqBE",
+    authDomain: "easyfiles1-71702.firebaseapp.com",
+    databaseURL: "https://easyfiles1-71702.firebaseio.com",
+    storageBucket: "easyfiles1-71702.appspot.com"
+  };
+  firebase.initializeApp(config);
+  // Get a reference to the storage service, which is used to create references in your storage bucket
+  function upload(){
+  var storage = firebase.storage();
+  var file = document.getElementById("files").files[0];
+  var storageRef = storage.ref();
+  var thisref = storageRef.child(file.name).put(file);
+  thisref.on('state_changed',function(snapshot){
+  console.log("file uplaoded succesfully");
+  },
+  function(error) {
+  },
+  function() {
+  // Upload completed successfully, now we can get the download URL
+  var downloadURL = thisref.snapshot.downloadURL;
+  console.log("got url");
+  document.getElementById("url").value = downloadURL;
+  alert("file uploaded successfully");
+});
+    }
+</script>
+
+</html>
